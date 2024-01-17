@@ -7,13 +7,20 @@
 {% endblock %}
 
 {% block body %}
-<h3>{{ post.title}}</h3>
-<h3>{{ post.text}}</h3>
-<div style="color: grey;">
-		{% if date(post.created) < date('-1year') %}
-            Older than 1 year
-        {% else %}
-            {{ post.created|date('d/m/Y') }}
-        {% endif %}
+{% include "micro_post/_post.html.twig" %}
+<div class="mt-4">
+{% for comments in post.comments %}
+    <div class="mb-2 pb-12">
+        <div class="flex pt-4">
+            <div class="inline-block bg-gray-200 dark: bg-gray-700 rounded-full text-3xl w-8 h-8 ring-2 ring-white dark:ring-gray-600 mr-2"></div>
+            <div class="font-medium text-gray-800 dark:text-gray-300 mr-2">Author</div>
+            <div class="font-light text-gray-500 dark:text-gray-500">When</div>
+        </div>
+        <div class="flex">
+            <div class="border border-gray-300 dark:border-gray-600 ml-10">xxx</div>
+            <div class=""></div>
+        </div>
+    </div>
+{% endfor %}
 </div>
 {% endblock %}

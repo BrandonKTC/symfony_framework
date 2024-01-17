@@ -30,6 +30,14 @@ class MicroPostRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithComments(): array {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.comments', 'c')
+            ->orderBy('p.created', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function remove(MicroPost $entity, bool $flush = false): void {
 
         $this->getEntityManager()->remove($entity);

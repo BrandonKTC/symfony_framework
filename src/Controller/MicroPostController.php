@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\MicroPost;
+use App\Form\CommentType;
 use App\Form\MicroPostType;
+use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +33,7 @@ class MicroPostController extends AbstractController
 
         // dd($posts->findAll());
         return $this->render('micro_post/index.html.twig', [
-            'posts' => $posts->findAll(),
+            'posts' => $posts->findAllWithComments(),
         ]);
 
     }
@@ -65,7 +68,7 @@ class MicroPostController extends AbstractController
 
     #[Route('/micro-post/{post}/edit', name: 'app_micro_post_edit')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $posts): Response {
-        $microPost = new MicroPost();
+
         $form = $this->createForm(MicroPostType::class, $post);
         $form->handleRequest($request);
 
@@ -79,7 +82,33 @@ class MicroPostController extends AbstractController
         }
 
         return $this->render('micro_post/edit.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'post' => $post
+        ]);
+    }
+
+    #[Route('/micro-post/{post}/comment', name: 'app_micro_post_comment')]
+    public function addComment(MicroPost $post, Request $request, CommentRepository $comments): Response {
+
+        $form = $this->createForm(CommentType::class, new Comment());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setPost($post);
+            $comments->add($comment, true);
+
+            // Add a flash
+            $this->addFlash('success', 'Your comment have been added');
+            // Redirect
+            return $this->redirectToRoute('app_micro_post_show', [
+                'post' => $post->getId()
+            ]);
+        }
+
+        return $this->render('micro_post/comment.html.twig', [
+            'form' => $form,
+            'post' => $post
         ]);
     }
 }
