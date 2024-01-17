@@ -2,6 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\MicroPost;
+use App\Entity\User;
+use App\Entity\UserProfile;
+use App\Repository\CommentRepository;
+use App\Repository\MicroPostRepository;
+use App\Repository\UserProfileRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +24,38 @@ class HelloController extends AbstractController
     ];
 
     #[Route('/{limit<\d+>?3}', name: 'app_index')]
-    public function index(int $limit): Response {
+    public function index(MicroPostRepository $posts, CommentRepository $comments ,  $limit): Response {
+
+        // $user = new User();
+        // $user->setEmail("email@email.com");
+        // $user->setPassword("password");
+
+        // $profile = new UserProfile();
+        // $profile->setUser($user);
+        // $profiles->add($profile, true);
+
+        // $profile = $profiles->find(1);
+        // $profiles->remove($profile, true);
+
+        // $post = $posts->find(10);
+        // $comment = $post->getComments()[0];
+
+        // $post->removeComment($comment);
+        // $posts->add($post, true);
+
+        // $post->setTitle('Hello');
+        // $post->setText('Hello');
+        // $post->setCreated(new DateTime());
+
+        // $comment = new Comment();
+        // $comment->setText('Hello');
+        // $comment->setPost($post);
+        // // $post->addComment($comment);
+        // // $posts->add($post, true);
+        // $comments->add($comment, true);
+
+
+
         return $this->render('hello/index.html.twig', [
             'messages' => $this->messages,
             'limit' => $limit
