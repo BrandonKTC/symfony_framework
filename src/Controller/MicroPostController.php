@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class MicroPostController extends AbstractController
 {
     #[Route('/micro-post', name: 'app_micro_post')]
